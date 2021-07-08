@@ -15,4 +15,3 @@ services:
 #port first one is local host no and second is docker number
 #volume is the total app volume is automaticaly kept in app in docker
 #command sh meaning shell -c run command and 0.0.0.0 is every ip present in docker and 8000 is to connect to ower local host
-
