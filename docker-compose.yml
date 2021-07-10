@@ -10,8 +10,23 @@ services:
         volumes:
             - ./app:/app
         command: >
-            sh -c "python manage.py runserver 0.0.0.0:8000"
+            sh -c "python manage.py wait_for_db && 
+            python manage.py migrate &&
+            python manage.py runserver 0.0.0.0:8000"
+        environment: 
+            - DB_HOST=db    # here first db will be started
+            - DB_NAME=app   # and u can use the db with the credentinals
+            - DB_USER=postgres
+            - DB_PASS=postgres
+        depends_on: 
+        - db
 #here we run in the name of app and context . meaning current file
 #port first one is local host no and second is docker number
 #volume is the total app volume is automaticaly kept in app in docker
 #command sh meaning shell -c run command and 0.0.0.0 is every ip present in docker and 8000 is to connect to ower local host
+    db:
+        image: postgres:10-alpine 
+        environment: 
+            - POSTGRES_DB=app
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
