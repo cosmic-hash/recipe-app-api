@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Permission
 from rest_framework import viewsets, mixins
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -7,6 +8,17 @@ from core.models import Tag, Ingredient
 from recipe import serializers
 # Create your views here.
 
+
+class BaseRecipeAttrViewSet(viewsets.GenericViewSet,
+                            mixins.ListModelMixin,
+                            mixins.CreateModelMixin):
+        """Base viewsets for user owned recipe attribure"""
+        authentication_classes = (TokenAuthentication,)
+        permission_classes = (IsAuthenticated,)
+
+        def get_queryset(self):
+            """Return objects for the current authenticated user only"""
+            
 
 class TagViewSet(viewsets.GenericViewSet,
                  mixins.ListModelMixin,
